@@ -1,11 +1,16 @@
 package com.ewallet.orderservice.controller;
 
+import com.ewallet.orderservice.constants.ServiceConstants;
 import com.ewallet.orderservice.dto.OrderRequest;
 import com.ewallet.orderservice.entity.Order;
 import com.ewallet.orderservice.service.OrderService;
 import jakarta.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -14,6 +19,8 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
+    private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
+
 
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
@@ -27,6 +34,7 @@ public class OrderController {
                 .status(orderRequest.getStatus())
                 .build();
         Order saved = orderService.createOrder(order);
+        logger.info("order created successfully:::::::::::");
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
@@ -53,6 +61,7 @@ public class OrderController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteOrder(@PathVariable Long id) {
         orderService.deleteOrder(id);
-        return ResponseEntity.ok("Order deleted successfully");
+        logger.info("order deleeted successfully:::::::::::");
+        return ResponseEntity.ok(ServiceConstants.ORDER_DELETED_SUCCESSFULLY);
     }
 }

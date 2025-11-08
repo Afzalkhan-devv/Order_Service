@@ -1,15 +1,18 @@
 package com.ewallet.orderservice.service;
 
+import com.ewallet.orderservice.constants.ServiceConstants;
 import com.ewallet.orderservice.entity.Order;
 import com.ewallet.orderservice.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.List;
 
 @Service
 public class OrderService {
     private final OrderRepository orderRepository;
+    private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
 
     public OrderService(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
@@ -21,7 +24,7 @@ public class OrderService {
     }
 
     public Order getOrderById(Long id) {
-        return orderRepository.findById(id).orElseThrow(() -> new RuntimeException("Order not found with id: " + id));
+        return orderRepository.findById(id).orElseThrow(() -> new RuntimeException(ServiceConstants.ORDER_NOT_FOUND + id));
     }
 
     public List<Order> getAllOrders() {
@@ -34,6 +37,7 @@ public class OrderService {
         existing.setCustomerName(updated.getCustomerName());
         existing.setAmount(updated.getAmount());
         existing.setStatus(updated.getStatus());
+        logger.info("updating order:::::::");
         return orderRepository.save(existing);
     }
 

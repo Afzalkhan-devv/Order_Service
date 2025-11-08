@@ -21,6 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
+/*This class will fakes the service no DB needed to test */
 class OrderControllerTest {
 
     private MockMvc mockMvc;
@@ -41,9 +42,9 @@ class OrderControllerTest {
 
     @Test
     void createOrder_shouldReturnCreated() throws Exception {
-        OrderRequest req = OrderRequest.builder().customerName("Afzal").amount(100.0).status("PENDING").build();
-        Order order = Order.builder().id(1L).customerName("Afzal").amount(100.0).status("PENDING").build();
-        when(orderService.createOrder(any(Order.class))).thenReturn(order);
+        OrderRequest req = OrderRequest.builder().customerName("Afzal").amount(100.0).status("PENDING").build(); //fake request
+        Order order = Order.builder().id(1L).customerName("Afzal").amount(100.0).status("PENDING").build(); //fake order
+        when(orderService.createOrder(any(Order.class))).thenReturn(order);                                 //return order
 
         mockMvc.perform(post("/api/orders")
                 .contentType(MediaType.APPLICATION_JSON)
